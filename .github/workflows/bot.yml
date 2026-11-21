@@ -1,0 +1,31 @@
+
+name: BOTVERSE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Discord Bot
+        run: npm start
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
